@@ -208,14 +208,15 @@ class BasicPortfolio(Portfolio):
         price = self.bars.get_latest_bar(symbol).close
         
         if symbol.startswith(('0', '3', '6')):
-            mkt_quantity = ((delta_holdings / price) // 100) * 100
+            mkt_quantity = ((delta_holdings / price) // 100) * 100 #计算买入数量，股票如何买
         else:
-            mkt_quantity = delta_holdings // price
+            mkt_quantity = delta_holdings // price    #其他产品直接除以价格
 
         if direction == 'LONG':
             order = OrderEvent(symbol, order_type, abs(mkt_quantity), 'BUY' if mkt_quantity>0 else 'SELL')
         elif direction == 'SHORT':
             order = OrderEvent(symbol, order_type, abs(mkt_quantity), 'SELL' if mkt_quantity<0 else 'BUY')
+        #这个对接着你的信号，然后行成下单事件，关于信号目前就3个，但是可以改
         elif direction == 'EXIT':
             order = OrderEvent(symbol, order_type, abs(cur_quantity), 'SELL' if cur_quantity>0 else 'BUY')
         else:

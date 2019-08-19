@@ -70,10 +70,19 @@ class CSVDataHandler(DataHandler):
         comb_index = None
         for s in self.symbol_list:
             self.symbol_data[s] = pd.read_csv(
-                os.path.join(self.csv_dir, '%s.csv' % s),
+               self.csv_dir,
                 header=0, index_col=0, parse_dates=True,
                 names=['datetime', 'open', 'high', 'low', 'close', 'volume']
-            ).sort_index()[self.start_date:self.end_date]
+            ).sort_index()
+            # if not isinstance(self.symbol_data[s]['datetime'],datetime.datetime) :
+            # print(self.symbol_data[s])
+            print('1111111111111111')
+            # self.symbol_data[s]['datetime'] = pd.to_datetime(self.symbol_data[s]['datetime'])
+            # print(self.symbol_data[s].head(5))
+            print(self.symbol_data[s].info())
+
+            # self.symbol_data[s]=self.symbol_data[s][self.start_date:self.end_date]
+            print('1111111')
             if comb_index is None:
                 comb_index = self.symbol_data[s].index
             else:
@@ -89,6 +98,7 @@ class CSVDataHandler(DataHandler):
         生成器，每次调用生成一个新的bar，直到数据最后，在update_bars()中调用
         """
         for b in self.symbol_data[symbol]:
+            # print(DataHandler.Bar(symbol, b[0], b[1][0], b[1][1], b[1][2], b[1][3], b[1][4]),'111111111122222222')
             yield DataHandler.Bar(symbol, b[0], b[1][0], b[1][1], b[1][2], b[1][3], b[1][4])
 
 
@@ -132,13 +142,15 @@ class CSVDataHandler(DataHandler):
         """
         for s in self.symbol_list:
             try:
-                bar = next(self._get_new_bar(s))
+                bar = next(self._get_new_bar(s))  #生成器扔出来的时候，就已经完全做好了，可以直接拿来用。
             except StopIteration:
                 self.continue_backtest = False
             else:
                 if bar is not None:
                     self.latest_symbol_data[s].append(bar)
+                    # print(BarEvent(bar),'woshishisceshi')
                     self.events.put(BarEvent(bar))
+                    # 这里有了bar之后，就把这个事件推送到队列里面去。
 
 
 class HDF5DataHandler(DataHandler):

@@ -51,9 +51,10 @@ class BarEvent(Event):
 
     def __str__(self):
         format_bar = "Type: %s, Symbol: %s, Datetime: %s, " \
-                     "Open: %s, High: %s, Low: %s, Close: %s, Volume: %s" % (
+                    "Open: %s, High: %s, Low: %s, Close: %s, Volume: %s" % (
                          self.type, self.bar[0], self.bar[1],
                          self.bar[2], self.bar[3], self.bar[4], self.bar[5], self.bar[6])
+
         return format_bar
 
     def __repr__(self):

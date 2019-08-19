@@ -32,7 +32,7 @@ class Backtest(object):
         """
         初始化回测
         csv_dir: CSV数据文件夹目录
-        symbol_list: 股票代码str的list，如'600008'
+        symbol_list: 产品代码str的list，如'600008'
         initial_capital: 初始资金，如10000.0
         heartbeat: k bar周期，以秒计，如分钟线为60，模拟交易使用
         start_date: 策略回测起始时间
@@ -86,11 +86,11 @@ class Backtest(object):
 
     def _run_backtest(self):
         """
-        执行回测
+        执行回测，开始循环首先，先要去拿到数据。
         """
         while True:
             # 更新k bar
-            bars = self.data_handler
+            bars = self.data_handler  #csvdatahandler,获取数据的源头，其实就是csvdatahandler的一个实例。
             if bars.continue_backtest:
                 bars.update_bars()
             else:
@@ -109,20 +109,20 @@ class Backtest(object):
                                                    str(event.bar[5])]))
 
                             self.strategy.calculate_signals(event)
-                            self.portfolio.update_timeindex()
+                            self.portfolio.update_timeindex() # 这个还没有研究透。
 
                         elif event.type == 'SIGNAL':
                             logger.info(' '.join(['Create Signal:', event.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                                                   event.symbol, event.signal_type]))
                             self.signals += 1
-                            self.portfolio.update_signal(event)
+                            self.portfolio.update_signal(event)  #根据信号，给组合，然后组合会生成相应的订单。
                         elif event.type == 'ORDER':
                             self.orders += 1
                             self.execution_handler.execute_order(event)
                         elif event.type == 'FILL':
                             self.fills += 1
                             self.portfolio.update_fill(event)
-            # time.sleep(self.heartbeat)
+            time.sleep(self.heartbeat)
 
     def _force_clear(self):
         """

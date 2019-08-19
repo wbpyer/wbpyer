@@ -51,7 +51,8 @@ class MovingAverageCrossStrategy(Strategy):
         if event.type == 'BAR':
             for s in self.symbol_list:
                 bar = self.bars.get_latest_bar(s)
-                if bar is None or bar == []: continue
+                if bar is None or bar == []:
+                    continue
 
                 bars = self.bars.get_latest_bars(s, N=self.long_window)
                 if len(bars) >= self.long_window:
@@ -65,18 +66,19 @@ class MovingAverageCrossStrategy(Strategy):
                             self.bought[s] = True
                     elif df['MA_l'].iloc[-1] < df['MA_s'].iloc[-1] and df['MA_l'].iloc[-2] < df['MA_s'].iloc[-2]:
                         if self.bought[s]:
-                            signal = SignalEvent(bar.symbol, bar.datetime, 'EXIT')
+                            signal = SignalEvent(bar.symbol, bar.datetime, 'SHORT')
+                            #这里要产生信号事件，推送到队列里面去。
                             self.events.put(signal)
                             self.bought[s] = False
 
 
 if __name__ == '__main__':
-    csv_dir = os.path.join(os.path.dirname(os.getcwd()), 'demo/testdata')
-    symbol_list = ['600008', '600018']
+    csv_dir = 'D:\coin_quant_ class_0518\coin_quant_class\data\\eos1d.csv'  #os.path.join(os.path.dirname(os.getcwd()), 'demo/testdata')
+    symbol_list = ['eos']
     initial_capital = 100000.0
     heartbeat = 0.0
-    start_date = datetime.datetime(2015, 10, 2, 0, 0)
-    end_date = datetime.datetime(2015, 12, 30, 23, 59)
+    start_date = datetime.datetime(2018, 3, 20)
+    end_date = datetime.datetime(2018, 3, 21)
 
     backtest = Backtest(csv_dir, symbol_list, initial_capital, heartbeat,
                         start_date, end_date, CSVDataHandler, SimulatedExecutionHandler,
@@ -86,3 +88,5 @@ if __name__ == '__main__':
 
     positions, holdings = backtest.simulate_trading()
     print(holdings.tail())
+
+
