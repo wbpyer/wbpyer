@@ -18,7 +18,7 @@ class MovingAverageCrossStrategy(Strategy):
     """
     移动双均线策略
     """
-    def __init__(self, bars, events, long_window=10, short_window=5):
+    def __init__(self, bars1, events, long_window=10, short_window=5):
         """
         初始化移动平均线策略
         参数：
@@ -27,7 +27,8 @@ class MovingAverageCrossStrategy(Strategy):
         long_window: 长期均线的长度
         short_window: 短期均线的长度
         """
-        self.bars = bars
+        self.bars1 = bars1
+
         self.symbol_list = self.bars.symbol_list
         self.events = events
         self.long_window = long_window
