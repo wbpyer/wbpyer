@@ -6,7 +6,7 @@
 
 其他可选的库如：line_profiler, cProfile, timeit等
 
-Credit: Bryan Helmig (inspiration), Robert Kern (line_profiler) and more
+Credit: B
 
 @author: Leon Zhang
 """

@@ -3,7 +3,7 @@
 """
 DataHandler抽象基类
 
-@author: Leon Zhang
+@author:
 @version: 0.5.2
 """
 
@@ -14,8 +14,11 @@ import pandas as pd
 import functools
 from collections import namedtuple
 from abc import ABCMeta, abstractmethod
+from xquant.engine.event import BarEvent
+from datetime import datetime
+import ccxt
 
-from .event import BarEvent
+
 
 
 class DataHandler(object):
@@ -155,3 +158,51 @@ class CSVDataHandler(DataHandler):
 
 class HDF5DataHandler(DataHandler):
     pass
+
+
+
+class ArbitrageDate(DataHandler):
+    exchangeok = ccxt.okex3()
+
+    '''经过一上午的反思我终于知道这里改如何写了，写一个DATe生成器，同时得到两个交易所，的价格
+    然后计算价差，对到队列中去，队列拿到后，根据策略去计算这个价差，整个套利流程就到一块了，获取合约
+    的websockt单独弄一个api模块，封到外面去，这样还做到了解耦和复用。
+    在这里的实现是用队列，api那面接到数据后处理完成把干净对数据直接对到队列里，这面从队列里拿，拿走算价差，最后推给新的队列
+    时间上目前细粒度要求不高，所以1m以上都OK，不用考虑tick的问题，也就是1分钟去交易所拉或者推一次就行，毕竟不是高频套利。
+    这里只是把两个合约打个包然后直接给回测，具体的处理由策略来做，在这里不要去求价差，这么做并不合理和连续。
+    '''
+    def __init__(self,events,symbol_list,exchange=exchangeok):
+        self.exchange = exchange
+        self.symbol_list = symbol_list
+        self.events = events
+        self.continue_backtest = True
+
+    def _make_adate(self):
+        '''具体的数据解封，交给strgerty,这里就直接打包好数据就行。不要算出价差，不需要这样
+        这里只是把两个合约打个包然后直接给回测，具体的处理由策略来做，在这里不要去求价差，这么做并不合理和连续。
+        '''
+        b = self.exchange.fetch_ohlcv(symbol='BTC-USD-SWAP',timeframe='1m',limit=1)
+        b = b[0]                      #为了和接口对接上，这里考虑是DF? 两个DF相减，理论上也是可以的啊。
+        bar = DataHandler.Bar('OKex',datetime.fromtimestamp(b[0]/1000), b[1], b[2], b[3], b[4], b[5])
+        print(bar,'111111111111')
+        return bar
+
+    def get_latest_bars(self, symbol, N=1):
+        '''从latest_symbol列表中返回最新的N个bar，或者所能返回的最大数量的bar
+        这里主要是为了计算指标的，暂时不用实现。套利不需要指标。'''
+        pass
+
+    def update_bars(self):
+        bar = self._make_adate()
+        if bar is not None:
+            # self.latest_symbol_data[s].append(bar)
+
+            self.events.put(BarEvent(bar))
+            # 这里有了bar之后，就把这个事件推送到队列里面去。
+
+
+
+
+
+
+

@@ -3,8 +3,8 @@
 """
 回测的主要接口
 
-@author: Leon Zhang
-@version: 0.4
+@author: wang
+@version: 0.0
 """
 
 import datetime
@@ -24,7 +24,7 @@ class Backtest(object):
     """
     封装回测设置和模块的接口
     """
-    def __init__(self, csv_dir, symbol_list, initial_capital,
+    def __init__(self, csv_dir,symbol_list, initial_capital,
                  heartbeat, start_date, end_date, data_handler,
                  execution_handler, portfolio, strategy,
                  commission_type='zero', slippage_type='zero',
@@ -75,8 +75,8 @@ class Backtest(object):
         """
         实例化类，得到data_handler(bars),strategy,portfolio(port),execution_handler(broker)对象
         """
-        self.data_handler = self.data_handler_cls(self.events, self.csv_dir, self.symbol_list,
-                                                  self.start_date, self.end_date)
+        self.data_handler = self.data_handler_cls(self.events,  self.symbol_list,
+                                                  )
         self.strategy = self.strategy_cls(self.data_handler, self.events, **self.params)
         self.portfolio = self.portfolio_cls(self.data_handler, self.events, self.start_date,
                                             self.initial_capital)

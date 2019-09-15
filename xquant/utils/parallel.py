@@ -4,7 +4,7 @@
 通过multiprocessing模块将串行计算变成并行计算的框架
 使用concurrent和synchronized两个装饰器实现并行计算
 
-Credit: Alex Sherman
+Credit:
 Ref: https://github.com/alex-sherman/deco
 
 缺陷：代码不符合PEP8

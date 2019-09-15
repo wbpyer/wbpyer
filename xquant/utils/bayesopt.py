@@ -8,7 +8,7 @@ Bayesian Optimization
 学术文献：https://arxiv.org/pdf/1206.2944.pdf
 算法参考：https://github.com/fmfn/BayesianOptimization
 
-@author: Leon Zhang
+@author:
 """
 
 import numpy as np

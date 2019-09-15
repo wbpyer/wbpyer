@@ -3,7 +3,7 @@
 """
 非常简单的日志模块
 
-@author: Leon Zhang
+@author:
 @version: 0.4
 """
 

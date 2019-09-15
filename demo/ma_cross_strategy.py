@@ -3,8 +3,8 @@
 """
 使用双均线策略测试
 
-@author: Leon Zhang
-@version: 0.5.2
+@author: wang
+@version: 0.0
 """
 
 import os
@@ -18,7 +18,7 @@ class MovingAverageCrossStrategy(Strategy):
     """
     移动双均线策略
     """
-    def __init__(self, bars1, events, long_window=10, short_window=5):
+    def __init__(self, bars, events, long_window=10, short_window=5):
         """
         初始化移动平均线策略
         参数：
@@ -27,9 +27,9 @@ class MovingAverageCrossStrategy(Strategy):
         long_window: 长期均线的长度
         short_window: 短期均线的长度
         """
-        self.bars1 = bars1
+        self.bars = bars
 
-        self.symbol_list = self.bars.symbol_list
+        self.symbol_list = self.bars.symbol_list # 这个应该是交易的标签，symbollist.
         self.events = events
         self.long_window = long_window
         self.short_window = short_window
@@ -38,7 +38,7 @@ class MovingAverageCrossStrategy(Strategy):
 
     def _calculate_initial_bought(self):
         """
-        添加symbol的持有情况到字典，初始化为未持有
+        添加symbol的持有情况到字典，初始化为未持有,刚开始时候都是未持有的。
         """
         bought = {}
         for s in self.symbol_list:
@@ -89,5 +89,7 @@ if __name__ == '__main__':
 
     positions, holdings = backtest.simulate_trading()
     print(holdings.tail())
+
+
 
 

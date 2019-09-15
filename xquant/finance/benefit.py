@@ -3,7 +3,7 @@
 """
 评估策略规则的优势率
 
-@author: Leon Zhang
+@author:
 @version: 0.4
 """
 

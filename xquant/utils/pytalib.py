@@ -6,8 +6,7 @@ pandas实现的TA-lib（technique analysis）
 
 # 有些指标未经检验！(Experimental)
 
-@author: Leon Zhang
-Reference: pandas_talib
+@author:
 """
 
 import pandas as pd

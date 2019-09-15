@@ -3,7 +3,7 @@
 """
 Monte Carlo模拟另类历史回测
 
-@author: Leon Zhang
+@author:
 @version: 0.4
 """
 

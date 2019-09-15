@@ -3,7 +3,7 @@
 """
 评估策略优劣的功能函数模块
 
-@author: Leon Zhang
+@author:
 """
 
 import numpy as np

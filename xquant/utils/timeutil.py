@@ -3,7 +3,7 @@
 """
 日期时间相关的功能函数模块
 
-@author: Leon Zhang
+@author:
 @version: 0.3.1
 """
 

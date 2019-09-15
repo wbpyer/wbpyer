@@ -1,6 +1,6 @@
-# XQuant文档
+kingQuant文档
 
-Backtest frame for equity/futures market. 股票和期货的量化投资回测框架。
+量化投资回测框架。
 
 ## 安装
 
@@ -185,6 +185,4 @@ trades = backtest.trade_record()
 1. demo中的完整的移动双均线策略：[Moving Average Cross Strategy](https://github.com/X0Leon/XQuant/blob/master/demo/ma_cross_strategy.py)
 2. 某商品期货策略的回测结果：
 
-![chart demo](chart_demo.png)
 
-Copyright (c) 2016 X0Leon (Leon Zhang) Email: pku09zl[at]gmail[dot]com

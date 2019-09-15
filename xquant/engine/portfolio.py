@@ -4,7 +4,7 @@
 Portfolio抽象基类/类
 头寸跟踪、订单管理，可以进一步做收益分析、风险管理等
 
-@author: Leon Zhang
+@author: wang
 """
 
 from abc import ABCMeta, abstractmethod
@@ -108,7 +108,7 @@ class BasicPortfolio(Portfolio):
         for sym in self.symbol_list:
             bars[sym] = self.bars.get_latest_bars(sym, N=1)
 
-        self.current_datetime = bars[self.symbol_list[0]][0][1]
+        self.current_datetime = bars[self.symbol_list[0]][0][1]   #todo 上写到了这里，有一些功能还要实现，不实现不行，比如这里。
 
         dp = {s:0 for s in self.symbol_list}
         dp['datetime'] = self.current_datetime
